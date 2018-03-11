@@ -2,6 +2,8 @@
 var toDoInput = document.querySelector("#newElement"),
 submit = document.querySelector("#btn"),
 toDoOutput = document.querySelector("#toDoList"),
+searchField = document.querySelector("#textFilterElement"),
+deleteSearch = document.querySelector("#removeSearchButton"),
 storageKey = "todostorage";
 
 //Funktion zum Daten laden
@@ -32,23 +34,28 @@ var toDos = loadData();
 var addToDo = function() {
   //Nur hinzufügen, wenn auch was im Inputfeld steht
   if (toDoInput.value.length > 0) {
-
     //Neues ToDo-Objekt erstellen und zum Array hinzufügen
     toDos.push({value: toDoInput.value, checked: false});
-
     //Input im Feld löschen
     toDoInput.value = "";
-
+    //Input im Textfilter löschen, damit alle Elemente angezeigt werden
+    searchField.value = "";
     //Gesamte Liste rendern
     showToDos(toDos);
   }
 };
+
+//TODO Einfügen, dass auch mit Enter Sachen submitted werden können - auch im HTML submit verwenden?
 
 //warten, dass man auf den Add Button klickt
 submit.addEventListener("click", addToDo);
 
 //Funktion zum Anzeigen der Array-Objekte
 var showToDos = function(toDos) {
+  if (toDoOutput.innerHTML == "") {
+    console.dir("Liste leider leer!");
+    //TODO irgendwie einfügen, dass ein Hinweis ausgegeben wird
+  }
   toDoOutput.innerHTML = "";
   for(var i=0; i<toDos.length; i++){
     var currentToDo = toDos[i];
@@ -63,6 +70,7 @@ var showToDos = function(toDos) {
     newCheck.type = "checkbox";
     //der Checkbox ne Klasse geben
     newCheck.classList.add("changeCheckbox");
+    //der Checkbox ne ID geben
     newCheck.id = id;
     //der neuen Checkbox den checked-Status vom momentanen Stand im Array geben
     newCheck.checked = currentToDo.checked;
@@ -90,7 +98,6 @@ var showToDos = function(toDos) {
     newBtn.appendChild(btnText);
     //Remove-Button ans Listenelement anhängen
     newLi.appendChild(newBtn);
-
     //neues komplettes Listenelement an die Liste hängen
     toDoOutput.appendChild(newLi);
   }
@@ -116,7 +123,6 @@ var removeToDo = function(event) {
   if (event.target.classList.contains("removeBtn")) {
     //Element aus dem Array löschen
     toDos.splice(event.target.dataset.toDoIndex,1);
-
     //Gesamte Liste rendern
     showToDos(toDos);
   }
@@ -125,5 +131,77 @@ var removeToDo = function(event) {
 //warten, dass man auf den Remove Button klickt
 document.addEventListener("click", removeToDo);
 
-//gesamte Liste rendern, wenn die Seite neu geöffnet wird
+//aufrufen, wenn Button zum aus/einblenden geklickt wurde
+var filterChecked = function(event) {
+  if (event.target.classList.contains("filterOff")) {
+    //Klasse ändern
+    filterFinished.className = "filterOn";
+    //Button Beschriftung ändern
+    event.target.innerHTML = "Fertige einblenden";
+    //Filter-Status im Objekt ändern
+    filters.filterDone.active = true;
+    //Funktion zum filtern aufrufen
+    filter();
+  } else if (event.target.classList.contains("filterOn")) {
+    //Klasse ändern
+    filterFinished.className = "filterOff";
+    //Button Beschriftung ändern
+    event.target.innerHTML = "Fertige ausblenden";
+    //Filter-Status im Objekt ändern
+    filters.filterDone.active = false;
+    //Funktion zum filtern aufrufen
+    filter();
+  }
+};
+
+//warten, dass man auf den Filter-Button klickt
+document.addEventListener("click", filterChecked)
+
+//aufrufen, wenn man was in den Textfilter eingibt oder auf den Löschen-Button drückt
+var textFilter = function(event) {
+  if (event.target.classList.contains("textFilter")) {
+    //Filter-Status im Objekt ändern
+    filters.filterText.active = true;
+    //Funktion zum filtern aufrufen
+    filter();
+  } else if (event.target.classList.contains("removeSearch")) {
+    //Feldwert löschen
+    searchField.value = "";
+    //Filter-Status im Objekt ändern
+    filters.filterText.active = false;
+    //Funktion zum filtern aufrufen
+    filter();
+  }
+};
+
+//warten, dass etwas eingegeben oder der Remove-Button gedrückt wird
+document.addEventListener("keyup", textFilter);
+document.addEventListener("click", textFilter);
+
+//Objekt, dass die verschiedenen Filter enthält:
+//Für jeden Filter wird gespeichert, ob er aktiv ist, und was er zurückgeben muss
+filters = {
+  filterDone: {active: false, func: function(toDo) {return toDo.checked == false;}},
+  filterText: {active: false, func: function(toDo) {return toDo.value.includes(searchField.value);}}
+};
+
+//allgemeine Filter-Funktion
+var filter = function() {
+  //bestehenden Array zwischen speichern
+  var filteredToDos = toDos;
+  //Schleife: gehe durch alle Keys in "filters", wobei i das aktuelle Attribut von filters ist
+  for (var i in filters) {
+    //Value von i merken
+    var currentFilter = filters[i];
+    //wenn der zu prüfende Filter aktiv ist
+    if (currentFilter.active) {
+      //dann filtere
+      filteredToDos = filteredToDos.filter(currentFilter.func);
+    }
+  }
+  //zeig den neuen (gefilterten) Array an
+  showToDos(filteredToDos);
+};
+
+//Zeig den (gespeicherten) Array an (beim Neuladen)
 showToDos(toDos);

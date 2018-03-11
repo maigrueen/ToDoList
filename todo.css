@@ -3,7 +3,17 @@
   padding: 20px;
 }
 
+.filter {
+  background-color: #e8e8e8;
+  padding: 20px;
+}
+
 h2 {
+  font-family: 'Sintony', sans-serif;
+  color: #273582;
+}
+
+h3 {
   font-family: 'Sintony', sans-serif;
   color: #273582;
 }
@@ -40,6 +50,23 @@ button {
   border: none;
   padding: 10px;
   transition: 0.3s;
+}
+
+button:hover {
+  background-color: #b2b0b0;
+}
+
+
+.filterOff {
+  font-family: 'Sintony', sans-serif;
+  color: #273582;
+  border: none;
+  padding: 10px;
+  transition: 0.3s;
+}
+
+.filterOn {
+  background-color: #b2b0b0;
 }
 
 .removeBtn {
