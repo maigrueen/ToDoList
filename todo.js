@@ -86,16 +86,17 @@ var showToDos = function(toDos) {
     newLabel.appendChild(labelText);
     //Label ans Listenelement hauen
     newLi.appendChild(newLabel);
-
     //Remove-Button anlegen
     var newBtn = document.createElement("button");
     //dem Button ne Klasse geben
     newBtn.classList.add("removeBtn");
     newBtn.dataset.toDoIndex = i;
-    //Button Text anlegen
-    var btnText = document.createTextNode("Löschen");
-    //Button Text auf den Button schreiben
-    newBtn.appendChild(btnText);
+    //i-Tag erstellen, um Icon einzufügen
+    var sp = document.createElement("i");
+    //Icon hinzufügen
+    sp.setAttribute("class", "fal fa-trash");
+    //Icon an den Button hängen
+    newBtn.appendChild(sp);
     //Remove-Button ans Listenelement anhängen
     newLi.appendChild(newBtn);
     //neues komplettes Listenelement an die Liste hängen
