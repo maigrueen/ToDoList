@@ -4,6 +4,7 @@ submit = document.querySelector("#btn"),
 toDoOutput = document.querySelector("#toDoList"),
 searchField = document.querySelector("#textFilterElement"),
 deleteSearch = document.querySelector("#removeSearchButton"),
+radioNoSort = document.querySelector("#noSort"),
 storageKey = "todostorage";
 
 //Funktion zum Daten laden
@@ -29,6 +30,8 @@ window.addEventListener("beforeunload", function () {saveData(toDos);});
 
 //unseren ToDo-Array erstellen, in dem die Laden-Funktion aufgerufen wird
 var toDos = loadData();
+
+//TODO Label mit angeben beim erstellen? Oder Prio?
 
 //Funktion ToDo anlegen
 var addToDo = function() {
@@ -56,6 +59,9 @@ toDoInput.addEventListener("keyup", function() {
 //Funktion zum Anzeigen der Array-Objekte
 var showToDos = function(toDos) {
   var filtertedTodos = filter(toDos);
+  if(sortings[sortings.activeSort]) {
+    filtertedTodos.sort(sortings[sortings.activeSort]);
+  }
   toDoOutput.innerHTML = "";
   for(var i=0; i<filtertedTodos.length; i++){
     var currentToDo = filtertedTodos[i];
@@ -114,7 +120,7 @@ var changeToDo = function(event) {
     var idCheck = event.target.id;
     var timestamp = idCheck.replace("todo_","");
     var id = toDos.findIndex(function(todo) {
-        return todo.timestamp == timestamp;
+      return todo.timestamp == timestamp;
     });
     //Wert vom richtigen Objekt ändern
     toDos[id].checked = event.target.checked;
@@ -131,7 +137,7 @@ var removeToDo = function(event) {
   if (event.target.classList.contains("removeBtn")) {
     var timestamp = event.target.dataset.toDoIndex;
     var id = toDos.findIndex(function(todo) {
-        return todo.timestamp == timestamp;
+      return todo.timestamp == timestamp;
     });
     //Element aus dem Array löschen
     toDos.splice(id,1);
@@ -190,8 +196,6 @@ var textFilter = function(event) {
 document.addEventListener("keyup", textFilter);
 document.addEventListener("click", textFilter);
 
-//TODO Alphabetisches sortieren / Sortieren nach Status ergänzen
-
 //Objekt, dass die verschiedenen Filter enthält:
 //Für jeden Filter wird gespeichert, ob er aktiv ist, und was er zurückgeben muss
 filters = {
@@ -216,6 +220,55 @@ var filter = function(toDos) {
   //zeig den neuen (gefilterten) Array an
   return filteredToDos;
 };
+
+//TODO noSort checked setzen, wenn geladen wird bzw. rauslesen, wie es zum letzten
+//mal sortiert wurde, und das wieder anhaken
+
+sortings = {
+  noSort: function(todoA, todoB) {
+    if (todoA.timestamp == todoB.timestamp) {
+      return 0;
+    } else if (todoA.timestamp < todoB.timestamp) {
+      return -1;
+    } else if (todoA.timestamp > todoB.timestamp) {
+      return 1;
+    }
+  },
+  sortDoneUp: function(todoA, todoB) {
+    if (todoA.checked == todoB.checked) {
+      return 0;
+    } else if (todoA.checked) {
+      return -1;
+    } else if (todoB.checked) {
+      return 1;
+    }
+  },
+  sortDoneDown: function(todoA, todoB) {
+    if (todoA.checked == todoB.checked) {
+      return 0;
+    } else if (todoA.checked) {
+      return 1;
+    } else if (todoB.checked) {
+      return -1;
+    }
+  },
+  sortABCup: function(todoA, todoB) {
+    return todoA.value.localeCompare(todoB.value);
+  },
+  sortABCdown: function(todoA, todoB) {
+    return todoB.value.localeCompare(todoA.value);
+  }
+};
+
+var sort = function() {
+  if (event.target.classList.contains("sort")) {
+    var sortValue = event.target.value;
+    sortings.activeSort = sortValue;
+    showToDos(toDos);
+  }
+};
+
+document.addEventListener("click", sort);
 
 //Zeig den (gespeicherten) Array an (beim Neuladen)
 showToDos(toDos);

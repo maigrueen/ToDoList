@@ -4,8 +4,23 @@
 }
 
 .filter {
+  font-family: 'Sintony', sans-serif;
+  color: #273582;
   background-color: #e8e8e8;
   padding: 20px;
+}
+
+.sorting {
+  font-family: 'Sintony', sans-serif;
+  color: #273582;
+  background-color: #e8e8e8;
+  padding: 20px;
+}
+
+.sorting label {
+  font-family: 'Sintony', sans-serif;
+  color: #273582;
+  font-size: 80%;
 }
 
 h2 {
@@ -81,4 +96,32 @@ input[type=text] {
 
 svg {
   pointer-events: none;
+}
+
+@media only screen and (max-width: 600px) {
+
+  .sorting label {
+    font-family: 'Sintony', sans-serif;
+    color: #273582;
+    margin-right: 10px;
+  }
+
+  button {
+    font-family: 'Sintony', sans-serif;
+    color: #273582;
+    border: none;
+    padding: 10px;
+    transition: 0.3s;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+
+  input[type=text] {
+    font-family: 'Sintony', sans-serif;
+    border: none;
+    padding:10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+
 }
