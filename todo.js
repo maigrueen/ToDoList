@@ -49,12 +49,17 @@ var addToDo = function() {
 
 //warten, dass man auf den Add Button klickt
 submit.addEventListener("click", addToDo);
+toDoInput.addEventListener("keyup", function() {
+  if (event.keyCode == 13) {
+    addToDo();
+  }
+});
 
 //Funktion zum Anzeigen der Array-Objekte
 var showToDos = function(toDos) {
   if (toDoOutput.innerHTML == "") {
     console.dir("Liste leider leer!");
-    //TODO irgendwie einfügen, dass ein Hinweis ausgegeben wird
+    //TODO irgendwie einfügen, dass ein Hinweis ausgegeben wird wenn die Liste leer ist
   }
   toDoOutput.innerHTML = "";
   for(var i=0; i<toDos.length; i++){
@@ -133,6 +138,7 @@ var removeToDo = function(event) {
 document.addEventListener("click", removeToDo);
 
 //aufrufen, wenn Button zum aus/einblenden geklickt wurde
+//TODO Icon beim Button einfügen
 var filterChecked = function(event) {
   if (event.target.classList.contains("filterOff")) {
     //Klasse ändern
@@ -178,6 +184,8 @@ var textFilter = function(event) {
 //warten, dass etwas eingegeben oder der Remove-Button gedrückt wird
 document.addEventListener("keyup", textFilter);
 document.addEventListener("click", textFilter);
+
+//TODO Alphabetisches sortieren / Sortieren nach Status ergänzen
 
 //Objekt, dass die verschiedenen Filter enthält:
 //Für jeden Filter wird gespeichert, ob er aktiv ist, und was er zurückgeben muss

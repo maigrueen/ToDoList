@@ -78,3 +78,7 @@ input[type=text] {
   border: none;
   padding:10px;
 }
+
+svg {
+  pointer-events: none
+}
