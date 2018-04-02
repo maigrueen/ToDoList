@@ -144,13 +144,12 @@ var removeToDo = function(event) {
 document.addEventListener("click", removeToDo);
 
 //aufrufen, wenn Button zum aus/einblenden geklickt wurde
-//TODO Icon beim Button einfügen
 var filterChecked = function(event) {
   if (event.target.classList.contains("filterOff")) {
     //Klasse ändern
     filterFinished.className = "filterOn";
     //Button Beschriftung ändern
-    event.target.innerHTML = "Fertige einblenden";
+    event.target.innerHTML = '<i class="fas fa-check-circle"></i> Fertige einblenden';
     //Filter-Status im Objekt ändern
     filters.filterDone.active = true;
     //Funktion zum filtern aufrufen
@@ -159,7 +158,7 @@ var filterChecked = function(event) {
     //Klasse ändern
     filterFinished.className = "filterOff";
     //Button Beschriftung ändern
-    event.target.innerHTML = "Fertige ausblenden";
+    event.target.innerHTML = '<i class="fal fa-check-circle"></i> Fertige ausblenden';
     //Filter-Status im Objekt ändern
     filters.filterDone.active = false;
     //Funktion zum filtern aufrufen
