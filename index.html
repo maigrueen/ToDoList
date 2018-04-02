@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ToDo List</title>
+  <title>ToDo Liste</title>
   <link rel="stylesheet" href="todo.css">
   <script defer src="https://pro.fontawesome.com/releases/v5.0.8/js/all.js" integrity="sha384-816IUmmhAwCMonQiPZBO/PTgzgsjHtpb78rpsLzldhb4HZjFzBl06Z3eu4ZuwHTz" crossorigin="anonymous"></script>
   </head>
 <body>
   <div class="header">
-    <h2>ToDo List</h2>
+    <h2>ToDo Liste</h2>
     <input type="text" id="newElement" placeholder="ToDo eintragen">
     <button type="button" id="btn"><i class="fal fa-plus-circle"></i> Hinzufügen</button>
   </div>
@@ -18,6 +18,14 @@
     <button type="button" class="filterOff" id="filterFinished"><i class="fal fa-check-circle"></i> Fertige ausblenden</button>
     <input type="text" class="textFilter" id="textFilterElement" placeholder="Textfilter">
     <button type="button" class="removeSearch" id="removeSearchButton"><i class="fal fa-minus-circle"></i> Suche löschen</button>
+  </div>
+  <div class="sorting">
+    <h3>Sortieren</h3>
+    <input type="radio" class="sort" id="noSort" name="sort" value="noSort"/><label for="noSort">keine Sortierung</label><br />
+    <input type="radio" class="sort" id="sortABCup" name="sort" value="sortABCup"/><label for="sortABCup"><i class="fal fa-sort-alpha-down"></i> Alphabetisch Aufsteigend</label><br />
+    <input type="radio" class="sort" id="sortABCdown" name="sort" value="sortABCdown"/><label for="sortABCdown"><i class="fal fa-sort-alpha-up"></i> Alphabetisch Absteigend</label><br />
+    <input type="radio" class="sort" id="sortDoneUp" name="sort" value="sortDoneUp"/><label for="sortDoneUp"><i class="fal fa-sort-amount-up"></i> Abgehakte oben</label><br />
+    <input type="radio" class="sort" id="sortDoneDown" name="sort" value="sortDoneDown"/><label for="sortDoneDown"><i class="fal fa-sort-amount-down"></i> Abgehakte unten</label>
   </div>
 
   <ul id="toDoList">
