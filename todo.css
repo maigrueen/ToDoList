@@ -80,5 +80,5 @@ input[type=text] {
 }
 
 svg {
-  pointer-events: none
+  pointer-events: none;
 }

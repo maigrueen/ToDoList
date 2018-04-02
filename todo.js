@@ -45,8 +45,6 @@ var addToDo = function() {
   }
 };
 
-//TODO Einfügen, dass auch mit Enter Sachen submitted werden können - auch im HTML submit verwenden?
-
 //warten, dass man auf den Add Button klickt
 submit.addEventListener("click", addToDo);
 toDoInput.addEventListener("keyup", function() {
@@ -61,9 +59,10 @@ var showToDos = function(toDos) {
     console.dir("Liste leider leer!");
     //TODO irgendwie einfügen, dass ein Hinweis ausgegeben wird wenn die Liste leer ist
   }
+  var filtertedTodos = filter(toDos);
   toDoOutput.innerHTML = "";
-  for(var i=0; i<toDos.length; i++){
-    var currentToDo = toDos[i];
+  for(var i=0; i<filtertedTodos.length; i++){
+    var currentToDo = filtertedTodos[i];
     //ID mit dem Index erstellen, um Label und Checkbox zusammen zu fügen
     var id = "todo_" + i;
 
@@ -148,7 +147,7 @@ var filterChecked = function(event) {
     //Filter-Status im Objekt ändern
     filters.filterDone.active = true;
     //Funktion zum filtern aufrufen
-    filter();
+    showToDos(toDos);
   } else if (event.target.classList.contains("filterOn")) {
     //Klasse ändern
     filterFinished.className = "filterOff";
@@ -157,7 +156,7 @@ var filterChecked = function(event) {
     //Filter-Status im Objekt ändern
     filters.filterDone.active = false;
     //Funktion zum filtern aufrufen
-    filter();
+    showToDos(toDos);
   }
 };
 
@@ -170,14 +169,14 @@ var textFilter = function(event) {
     //Filter-Status im Objekt ändern
     filters.filterText.active = true;
     //Funktion zum filtern aufrufen
-    filter();
+    showToDos(toDos);
   } else if (event.target.classList.contains("removeSearch")) {
     //Feldwert löschen
     searchField.value = "";
     //Filter-Status im Objekt ändern
     filters.filterText.active = false;
     //Funktion zum filtern aufrufen
-    filter();
+    showToDos(toDos);
   }
 };
 
@@ -195,7 +194,7 @@ filters = {
 };
 
 //allgemeine Filter-Funktion
-var filter = function() {
+var filter = function(toDos) {
   //bestehenden Array zwischen speichern
   var filteredToDos = toDos;
   //Schleife: gehe durch alle Keys in "filters", wobei i das aktuelle Attribut von filters ist
@@ -209,7 +208,7 @@ var filter = function() {
     }
   }
   //zeig den neuen (gefilterten) Array an
-  showToDos(filteredToDos);
+  return filteredToDos;
 };
 
 //Zeig den (gespeicherten) Array an (beim Neuladen)
