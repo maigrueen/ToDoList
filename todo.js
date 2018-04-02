@@ -35,7 +35,7 @@ var addToDo = function() {
   //Nur hinzufügen, wenn auch was im Inputfeld steht
   if (toDoInput.value.length > 0) {
     //Neues ToDo-Objekt erstellen und zum Array hinzufügen
-    toDos.push({value: toDoInput.value, checked: false});
+    toDos.push({value: toDoInput.value, checked: false, timestamp: new Date().getTime()});
     //Input im Feld löschen
     toDoInput.value = "";
     //Input im Textfilter löschen, damit alle Elemente angezeigt werden
@@ -55,16 +55,12 @@ toDoInput.addEventListener("keyup", function() {
 
 //Funktion zum Anzeigen der Array-Objekte
 var showToDos = function(toDos) {
-  if (toDoOutput.innerHTML == "") {
-    console.dir("Liste leider leer!");
-    //TODO irgendwie einfügen, dass ein Hinweis ausgegeben wird wenn die Liste leer ist
-  }
   var filtertedTodos = filter(toDos);
   toDoOutput.innerHTML = "";
   for(var i=0; i<filtertedTodos.length; i++){
     var currentToDo = filtertedTodos[i];
     //ID mit dem Index erstellen, um Label und Checkbox zusammen zu fügen
-    var id = "todo_" + i;
+    var id = "todo_" + currentToDo.timestamp;
 
     //neues Listenelement
     var newLi = document.createElement("li");
@@ -94,7 +90,7 @@ var showToDos = function(toDos) {
     var newBtn = document.createElement("button");
     //dem Button ne Klasse geben
     newBtn.classList.add("removeBtn");
-    newBtn.dataset.toDoIndex = i;
+    newBtn.dataset.toDoIndex = currentToDo.timestamp;
     //i-Tag erstellen, um Icon einzufügen
     var sp = document.createElement("i");
     //Icon hinzufügen
@@ -106,6 +102,9 @@ var showToDos = function(toDos) {
     //neues komplettes Listenelement an die Liste hängen
     toDoOutput.appendChild(newLi);
   }
+  if (toDoOutput.innerHTML == "") {
+    toDoOutput.innerHTML = '<li>Leider keine ToDos zur Anzeige vorhanden.</li>'
+  }
 };
 
 //Funktion zum Status der Checkbox ändern
@@ -113,9 +112,13 @@ var changeToDo = function(event) {
   if (event.target.classList.contains("changeCheckbox")) {
     //id der Checkbox holen und Präfix todo_ abschneiden
     var idCheck = event.target.id;
-    var id = idCheck.replace("todo_","");
+    var timestamp = idCheck.replace("todo_","");
+    var id = toDos.findIndex(function(todo) {
+        return todo.timestamp == timestamp;
+    });
     //Wert vom richtigen Objekt ändern
     toDos[id].checked = event.target.checked;
+    showToDos(toDos);
   }
 };
 
@@ -126,8 +129,12 @@ document.addEventListener("change", changeToDo);
 var removeToDo = function(event) {
   //nur löschen, wenn die Klasse removeBtn gesetzt ist
   if (event.target.classList.contains("removeBtn")) {
+    var timestamp = event.target.dataset.toDoIndex;
+    var id = toDos.findIndex(function(todo) {
+        return todo.timestamp == timestamp;
+    });
     //Element aus dem Array löschen
-    toDos.splice(event.target.dataset.toDoIndex,1);
+    toDos.splice(id,1);
     //Gesamte Liste rendern
     showToDos(toDos);
   }
