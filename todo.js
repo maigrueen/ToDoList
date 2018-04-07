@@ -32,7 +32,11 @@ window.addEventListener("beforeunload", function () {saveData(toDos);});
 //unseren ToDo-Array erstellen, in dem die Laden-Funktion aufgerufen wird
 var toDos = loadData();
 
-//TODO Label mit angeben beim erstellen? Oder Prio?
+//TODO Kategorie mit Angeben:
+// - nach Kategorie Sortieren
+// - nach Kategorie filtern?
+// - Kategorien auf farbigem Button platzieren: gleiche Farbe für gleiche Kategorien
+// - oder Farbe auswählen beim anlegen?
 
 //Funktion ToDo anlegen
 var addToDo = function() {
