@@ -292,6 +292,12 @@ sortings = {
   },
   sortABCdown: function(todoA, todoB) {
     return todoB.value.localeCompare(todoA.value);
+  },
+  sortCategoryUp: function(todoA, todoB) {
+    return todoA.category.localeCompare(todoB.category);
+  },
+  sortCategoryDown: function(todoA, todoB) {
+    return todoB.category.localeCompare(todoA.category);
   }
 };
 
