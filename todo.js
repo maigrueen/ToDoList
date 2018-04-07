@@ -1,3 +1,9 @@
+//TODO Kategorie mit Angeben:
+// - nach Kategorie filtern
+// - Kategorien auf farbigem Button platzieren: gleiche Farbe für gleiche Kategorien
+// - oder Farbe auswählen beim anlegen?
+// - Textsuche auf Kategorien erweitern
+
 //Variablen mit den Elementen im HTML verknüpfen
 var toDoInput = document.querySelector("#newElement"),
 categoryInput = document.querySelector("#newCategory"),
@@ -31,12 +37,6 @@ window.addEventListener("beforeunload", function () {saveData(toDos);});
 
 //unseren ToDo-Array erstellen, in dem die Laden-Funktion aufgerufen wird
 var toDos = loadData();
-
-//TODO Kategorie mit Angeben:
-// - nach Kategorie filtern
-// - Kategorien auf farbigem Button platzieren: gleiche Farbe für gleiche Kategorien
-// - oder Farbe auswählen beim anlegen?
-// - Textsuche auf Kategorien erweitern
 
 //Funktion ToDo anlegen
 var addToDo = function() {
