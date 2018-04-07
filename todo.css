@@ -71,6 +71,18 @@ button:hover {
   background-color: #b2b0b0;
 }
 
+.categoryLabel {
+  float: right;
+  margin-right: 50px;
+}
+
+.categoryLabel:hover {
+  background-color: Transparent;
+}
+
+.removeBtn {
+  float: right;
+}
 
 .filterOff {
   font-family: 'Sintony', sans-serif;
@@ -84,10 +96,6 @@ button:hover {
   background-color: #b2b0b0;
 }
 
-.removeBtn {
-  float:right;
-}
-
 input[type=text] {
   font-family: 'Sintony', sans-serif;
   border: none;
@@ -98,6 +106,7 @@ svg {
   pointer-events: none;
 }
 
+/* Media Query für Smartphone */
 @media only screen and (max-width: 600px) {
 
   .sorting label {
@@ -123,5 +132,4 @@ svg {
     margin-right: 10px;
     margin-bottom: 10px;
   }
-
 }

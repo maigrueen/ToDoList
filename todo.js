@@ -1,5 +1,6 @@
 //Variablen mit den Elementen im HTML verknüpfen
 var toDoInput = document.querySelector("#newElement"),
+categoryInput = document.querySelector("#newCategory"),
 submit = document.querySelector("#btn"),
 toDoOutput = document.querySelector("#toDoList"),
 searchField = document.querySelector("#textFilterElement"),
@@ -38,9 +39,11 @@ var addToDo = function() {
   //Nur hinzufügen, wenn auch was im Inputfeld steht
   if (toDoInput.value.length > 0) {
     //Neues ToDo-Objekt erstellen und zum Array hinzufügen
-    toDos.push({value: toDoInput.value, checked: false, timestamp: new Date().getTime()});
+    toDos.push({value: toDoInput.value, category: categoryInput.value, checked: false, timestamp: new Date().getTime()});
     //Input im Feld löschen
     toDoInput.value = "";
+    //Input in der Kategorie Löschen
+    categoryInput.value = "";
     //Input im Textfilter löschen, damit alle Elemente angezeigt werden
     searchField.value = "";
     //Gesamte Liste rendern
@@ -48,9 +51,14 @@ var addToDo = function() {
   }
 };
 
-//warten, dass man auf den Add Button klickt
+//warten, dass man auf den Add Button klickt (oder im Input- oder Kategorie-Feld Enter klickt)
 submit.addEventListener("click", addToDo);
 toDoInput.addEventListener("keyup", function() {
+  if (event.keyCode == 13) {
+    addToDo();
+  }
+});
+categoryInput.addEventListener("keyup", function() {
   if (event.keyCode == 13) {
     addToDo();
   }
@@ -58,13 +66,17 @@ toDoInput.addEventListener("keyup", function() {
 
 //Funktion zum Anzeigen der Array-Objekte
 var showToDos = function(toDos) {
-  var filtertedTodos = filter(toDos);
+  //gefilterte Liste benutzen (damit kein Filter einfach so zurück gesetzt wird)
+  var filteredTodos = filter(toDos);
+  //wenn eine Sortierung angehakt ist, dann benutz sie auch
   if(sortings[sortings.activeSort]) {
-    filtertedTodos.sort(sortings[sortings.activeSort]);
+    filteredTodos.sort(sortings[sortings.activeSort]);
   }
+  //Liste erstmal löschen
   toDoOutput.innerHTML = "";
-  for(var i=0; i<filtertedTodos.length; i++){
-    var currentToDo = filtertedTodos[i];
+  //jedes Listenelement zusammen bauen
+  for(var i=0; i<filteredTodos.length; i++){
+    var currentToDo = filteredTodos[i];
     //ID mit dem Index erstellen, um Label und Checkbox zusammen zu fügen
     var id = "todo_" + currentToDo.timestamp;
 
@@ -92,10 +104,12 @@ var showToDos = function(toDos) {
     newLabel.appendChild(labelText);
     //Label ans Listenelement hauen
     newLi.appendChild(newLabel);
+
     //Remove-Button anlegen
     var newBtn = document.createElement("button");
     //dem Button ne Klasse geben
     newBtn.classList.add("removeBtn");
+    //über Dataset ID geben
     newBtn.dataset.toDoIndex = currentToDo.timestamp;
     //i-Tag erstellen, um Icon einzufügen
     var sp = document.createElement("i");
@@ -105,9 +119,26 @@ var showToDos = function(toDos) {
     newBtn.appendChild(sp);
     //Remove-Button ans Listenelement anhängen
     newLi.appendChild(newBtn);
+
+    if (currentToDo.category.length > 0) {
+      //Kategorie als Button anlegen
+      var newCatBtn = document.createElement("button");
+      //Klasse zuweisen
+      newCatBtn.classList.add("categoryLabel");
+      //über Dataset ID geben
+      newCatBtn.dataset.toDoIndex = currentToDo.timestamp;
+      //Button Text anlegen
+      var catBtnText = document.createTextNode(currentToDo.category);
+      //Text auf Button schreiben
+      newCatBtn.appendChild(catBtnText);
+      //Kategorie Button ans Listenelement anhängen
+      newLi.appendChild(newCatBtn);
+    }
+
     //neues komplettes Listenelement an die Liste hängen
     toDoOutput.appendChild(newLi);
   }
+
   if (toDoOutput.innerHTML == "") {
     toDoOutput.innerHTML = '<li>Leider keine ToDos zur Anzeige vorhanden.</li>'
   }
