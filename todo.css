@@ -17,12 +17,6 @@
   padding: 20px;
 }
 
-.sorting label {
-  font-family: 'Sintony', sans-serif;
-  color: #273582;
-  font-size: 80%;
-}
-
 h2 {
   font-family: 'Sintony', sans-serif;
   color: #273582;
@@ -71,7 +65,24 @@ button:hover {
   background-color: #b2b0b0;
 }
 
+select {
+  font-family: 'Sintony', sans-serif;
+  color: #273582;
+  font-size: 80%;
+  padding-left: 10px;
+  padding-right: 10px;
+  height: 35px;
+  line-height: 35px;
+  background-color: #DCDCDC;
+  border: none;
+}
+
+option:hover {
+  background-color: #b2b0b0;
+}
+
 .categoryLabel {
+  border-radius: 50px 50px 50px 50px;
   float: right;
   margin-right: 50px;
 }

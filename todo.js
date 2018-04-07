@@ -33,10 +33,10 @@ window.addEventListener("beforeunload", function () {saveData(toDos);});
 var toDos = loadData();
 
 //TODO Kategorie mit Angeben:
-// - nach Kategorie Sortieren
-// - nach Kategorie filtern?
+// - nach Kategorie filtern
 // - Kategorien auf farbigem Button platzieren: gleiche Farbe für gleiche Kategorien
 // - oder Farbe auswählen beim anlegen?
+// - Textsuche auf Kategorien erweitern
 
 //Funktion ToDo anlegen
 var addToDo = function() {
@@ -57,12 +57,12 @@ var addToDo = function() {
 
 //warten, dass man auf den Add Button klickt (oder im Input- oder Kategorie-Feld Enter klickt)
 submit.addEventListener("click", addToDo);
-toDoInput.addEventListener("keyup", function() {
+toDoInput.addEventListener("keyup", function(event) {
   if (event.keyCode == 13) {
     addToDo();
   }
 });
-categoryInput.addEventListener("keyup", function() {
+categoryInput.addEventListener("keyup", function(event) {
   if (event.keyCode == 13) {
     addToDo();
   }
@@ -256,9 +256,6 @@ var filter = function(toDos) {
   return filteredToDos;
 };
 
-//TODO noSort checked setzen, wenn geladen wird bzw. rauslesen, wie es zum letzten
-//mal sortiert wurde, und das wieder anhaken
-
 sortings = {
   noSort: function(todoA, todoB) {
     if (todoA.timestamp == todoB.timestamp) {
@@ -301,7 +298,7 @@ sortings = {
   }
 };
 
-var sort = function() {
+var sort = function(event) {
   if (event.target.classList.contains("sort")) {
     var sortValue = event.target.value;
     sortings.activeSort = sortValue;
@@ -309,7 +306,7 @@ var sort = function() {
   }
 };
 
-document.addEventListener("click", sort);
+document.addEventListener("change", sort);
 
 //Zeig den (gespeicherten) Array an (beim Neuladen)
 showToDos(toDos);
